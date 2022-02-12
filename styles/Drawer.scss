@@ -1,0 +1,30 @@
+.drawerBurger{
+    margin:1.1rem 1.3rem;
+    box-shadow: 0.1px 0.1px 0.1px 0.1px black;
+
+    &:hover{
+        cursor:pointer;
+        
+    }
+}
+.drawer-card{
+    &:hover{
+        cursor:pointer;
+        transform: translateX(7px);
+        background-color:cornsilk;
+        transition: transform 0.4s ease-in-out;
+        
+    }
+}
+
+.card{
+    border-radius: 40px !important;
+    border: 1px solid blue;
+}
+.notesCont{
+    margin-bottom: 2vh;
+
+}
+.note{
+    transition: 0.51s ease-in-out;
+}
