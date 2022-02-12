@@ -40,7 +40,7 @@ export default async function handler(
         res.status(200).json(Note);
       } catch (err) {
         console.log(err);
-        res.status(500).json("error");
+        res.status(500).json({err:"error",error:JSON.stringify(err)});
       }
   }
 }
