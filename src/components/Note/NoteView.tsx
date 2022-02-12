@@ -70,6 +70,7 @@ export default function NoteView() {
         //     },400)
         //   }
         // })
+        
     }
   },[note,title,noteId])
   return (
