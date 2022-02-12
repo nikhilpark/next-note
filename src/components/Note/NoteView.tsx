@@ -1,17 +1,26 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios"
 import {
   TextField,
   Button,
   SpeedDial,
   SpeedDialIcon,
   SpeedDialAction,
+  CircularProgress
 } from "@mui/material";
 import TextIncreaseIcon from "@mui/icons-material/TextIncrease";
 import TextDecreaseIcon from "@mui/icons-material/TextDecrease";
+import DoneRoundedIcon from '@mui/icons-material/DoneRounded';
+const UIDGenerator = require('uid-generator');
+const uidgen = new UIDGenerator();
 export default function NoteView() {
   const [note, setNote] = useState("");
+  const [title,setTitle] = useState("")
   const [noteFontSize, setNoteFontSize] = useState(20);
   const [maxChars, setMaxChars] = useState(500);
+  const [saveLoading,setSaveLoading] = useState(false)
+  const [newNote,setNewNote] = useState(true)
+  const [noteId,setNoteId] = useState()
   const handleNoteChange = (e: any) => {
     if (e.target.value.length < maxChars) {
       setNote(e.target.value);
@@ -25,18 +34,44 @@ export default function NoteView() {
   const handleFontDecrease = () => {
     setNoteFontSize(noteFontSize - 1);
   };
+
+  useEffect(()=>{
+    if(newNote){
+    setNoteId(uidgen.generateSync())
+    setNewNote(false)
+  }
+  },[newNote])
+
   useEffect(()=>{
     console.log("effect")
-    if(note.length>0){
+    if(note.length>10){
+      setSaveLoading(true)
         setNote(note.replaceAll(":)","😀").replaceAll("..","● ").replaceAll("@ss","\n----------------------------------\n"))
         if(note.includes("~clr")){
-            setNote("")
+          
+          setNote("")
         }
         if(note.includes("&next")){
-            alert("new note")
+          setNote("") 
+          setTitle("")
+          setNewNote(true)
         }
+        const reqData = {
+          title,
+          content:note,
+          uid:noteId,
+
+        }
+        axios.post("/api/note",reqData).then((res)=>{
+          if(res.status === 200){
+            console.log("Note Saved")
+            setTimeout(()=>{
+              setSaveLoading(false)
+            },400)
+          }
+        })
     }
-  },[note])
+  },[note,title,noteId])
   return (
     <div>
       <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
@@ -56,6 +91,8 @@ export default function NoteView() {
             <TextField
             placeholder="Title"
             style={{ width: "40vw",fontSize:"5rem" }}
+            value={title}
+            onChange={(e)=>{setTitle(e.target.value)}}
 
             />
           <TextField
@@ -95,7 +132,8 @@ export default function NoteView() {
             />
             <SpeedDialAction key={"key"} tooltipTitle={"edit"} />
           </SpeedDial>
-          <div>{note.length}/500</div>
+        
+          <div>{note.length}/500 &nbsp;   {saveLoading?<CircularProgress size={30}/>:<span style={{fontSize:'0.8rem'}}><DoneRoundedIcon/></span>}</div>
         </div>
       </div>
     </div>
