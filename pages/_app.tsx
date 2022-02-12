@@ -7,10 +7,10 @@ import Drawer from '../src/components/Drawer/Drawer'
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-  <ThemeProvider>
+    <>
     <Drawer/>
     <Component {...pageProps} />
-  </ThemeProvider>
+    </>
   )
 }
 
