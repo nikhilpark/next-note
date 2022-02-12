@@ -62,14 +62,14 @@ export default function NoteView() {
           uid:noteId,
 
         }
-        axios.post("/api/note",reqData).then((res)=>{
-          if(res.status === 200){
-            console.log("Note Saved")
-            setTimeout(()=>{
-              setSaveLoading(false)
-            },400)
-          }
-        })
+        // axios.post("/api/note",reqData).then((res)=>{
+        //   if(res.status === 200){
+        //     console.log("Note Saved")
+        //     setTimeout(()=>{
+        //       setSaveLoading(false)
+        //     },400)
+        //   }
+        // })
     }
   },[note,title,noteId])
   return (
