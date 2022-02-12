@@ -31,7 +31,7 @@ export default async function handler(
       try {
         const {title,content,uid,userUid} = req.body;
         const User = await UserModel.findOne({uid:userUid}).lean()
-        const Note = await NoteModel.findOneAndUpdate({uid},{$set:{title,content:content.replaceAll("&new",""),user:User["_id"]}},{upsert:true,lean:true,new:true});
+        const Note = await NoteModel.findOneAndUpdate({uid},{$set:{title,content:content,user:User["_id"]}},{upsert:true,lean:true,new:true});
         if(User.notes.includes(Note["_id"])){
         } else {
         await UserModel.updateOne({_id:User["_id"]},{$addToSet:{notes:Note["_id"]}})
