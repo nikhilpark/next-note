@@ -1,12 +1,13 @@
 import type { NextPage } from 'next'
 import React,{ useState, useEffect } from 'react'
-import NoteView from '../src/components/Note/NoteView'
-import Note,{NoteProps} from "../src/components/Note/Note"
+import CreateNote from '../src/components/Note/CreateNote'
+import Notes from "../src/components/Note/Notes"
 import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 import axios from 'axios'
 const UIDGenerator = require('uid-generator');
+import { Container } from '@mui/material'
 const uidgen = new UIDGenerator();
 const Home: NextPage = () => {
 
@@ -53,13 +54,7 @@ const Home: NextPage = () => {
       verifyUser()
   },[])
 
-  useEffect(()=>{
-    axios.post("/api/note/usernotes",{uid:localStorage.getItem("uid")}).then((res)=>{
-      if(res.status === 200){
-        setNotes(res.data.notes)
-      }
-    })
-  })
+
 
 
   return (
@@ -67,18 +62,16 @@ const Home: NextPage = () => {
        <Head>
          Next Note
        </Head>
-       <div style={{display:'flex',justifyContent:'center',marginTop:'30vh'}}>
-       <NoteView/>
+       <Container maxWidth="sm">
+       <div style={{marginTop:'10vh'}}>
+       <CreateNote/>
        </div>
-       {notes.length>0?
-          <div style={{display:'flex',gap:'1rem',justifyContent:'center'}}>
-            {notes.map((note:NoteProps,key)=>{
-              return <Note title={note.title} content={note.content} key={key}/>
-            })}
-         </div>:null}
-       <div>
-
+       </Container>
+       <Container maxWidth="sm">
+       <div style={{marginTop:'4vh'}}>
+       <Notes/>
        </div>
+       </Container>
     </div>
   )
 }

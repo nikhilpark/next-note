@@ -3,6 +3,7 @@ import axios from "axios"
 import {
   TextField,
   Button,
+  Container,
   SpeedDial,
   SpeedDialIcon,
   SpeedDialAction,
@@ -13,7 +14,7 @@ import TextDecreaseIcon from "@mui/icons-material/TextDecrease";
 import DoneRoundedIcon from '@mui/icons-material/DoneRounded';
 const UIDGenerator = require('uid-generator');
 const uidgen = new UIDGenerator();
-export default function NoteView() {
+export default function CreateNote() {
   const [note, setNote] = useState("");
   const [title,setTitle] = useState("")
   const [noteFontSize, setNoteFontSize] = useState(20);
@@ -46,12 +47,11 @@ export default function NoteView() {
     console.log("effect")
     if(note.length>10){
       setSaveLoading(true)
-        setNote(note.replaceAll(":)","😀").replaceAll("..","● ").replaceAll("@ss","\n----------------------------------\n"))
+        setNote(note.replaceAll("&new","").replaceAll(":)","😀").replaceAll("..","● ").replaceAll("@ss","\n----------------------------------\n"))
         if(note.includes("~clr")){
-          
           setNote("")
         }
-        if(note.includes("&next")){
+        if(note.includes("&new")){
           setNote("") 
           setTitle("")
           setNewNote(true)
@@ -74,7 +74,8 @@ export default function NoteView() {
     }
   },[note,title,noteId])
   return (
-    <div>
+   
+  
       <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
         <div>
           <span
@@ -91,13 +92,13 @@ export default function NoteView() {
         <div style={{display:'flex',flexDirection:'column',gap:'0.4rem'}}>
             <TextField
             placeholder="Title"
-            style={{ width: "40vw",fontSize:"5rem" }}
+            InputProps={{ style: { fontSize: noteFontSize*1.2 } }}
+            InputLabelProps={{ style: { fontSize: noteFontSize*1.2 } }}
             value={title}
             onChange={(e)=>{setTitle(e.target.value)}}
 
             />
           <TextField
-            style={{ width: "40vw",fontSize:"5rem" }}
             value={note}
             InputProps={{ style: { fontSize: noteFontSize } }}
             InputLabelProps={{ style: { fontSize: noteFontSize } }}
@@ -137,6 +138,5 @@ export default function NoteView() {
           <div>{note.length}/500 &nbsp;   {saveLoading?<CircularProgress size={30}/>:<span style={{fontSize:'0.8rem'}}><DoneRoundedIcon/></span>}</div>
         </div>
       </div>
-    </div>
   );
 }

@@ -1,7 +1,7 @@
-import dbConnect from "../../lib/dbConnect";
-import { NoteModel } from "../../models/Note.model";
+import dbConnect from "../../../lib/dbConnect";
+import { NoteModel } from "../../../models/Note.model";
 import { NextApiRequest, NextApiResponse } from "next";
-import { UserModel } from "../../models/User.model";
+import { UserModel } from "../../../models/User.model";
 
 export default async function handler(
   req: NextApiRequest,
@@ -29,15 +29,14 @@ export default async function handler(
       break;
     case "POST":
       try {
-        const {title,content,uid,userUid} = req.body;
-        const User = await UserModel.findOne({uid:userUid}).lean()
-        const Note = await NoteModel.findOneAndUpdate({uid},{$set:{title,content:content.replaceAll("&new",""),user:User["_id"]}},{upsert:true,lean:true,new:true});
-        if(User.notes.includes(Note["_id"])){
-        } else {
-        await UserModel.updateOne({_id:User["_id"]},{$addToSet:{notes:Note["_id"]}})
-        }
-        
-        res.status(200).json(Note);
+        const {noteId} = req.body;
+        const del = await NoteModel.deleteOne({_id:noteId}).lean();
+        if(del){
+        res.status(200).json({"success":"Note deleted"});
+    }   else{
+        res.status(200).json({"error":"error ocuured"});
+
+    }
       } catch (err) {
         console.log(err);
         res.status(500).json("error");
