@@ -6,6 +6,10 @@ const NoteSchema = new Schema({
     title:String,
     content:String,
     uid:String,
+    user:{
+        type:Schema.Types.ObjectId,
+        ref:'User'
+    }
 })
 
 

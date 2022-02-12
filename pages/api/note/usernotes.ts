@@ -1,7 +1,7 @@
-import dbConnect from "../../lib/dbConnect";
-import { NoteModel } from "../../models/Note.model";
+import dbConnect from "../../../lib/dbConnect";
+import { NoteModel } from "../../../models/Note.model";
 import { NextApiRequest, NextApiResponse } from "next";
-import { UserModel } from "../../models/User.model";
+import { UserModel } from "../../../models/User.model";
 
 export default async function handler(
   req: NextApiRequest,
@@ -29,15 +29,15 @@ export default async function handler(
       break;
     case "POST":
       try {
-        const {title,content,uid,userUid} = req.body;
-        const User = await UserModel.findOne({uid:userUid}).lean()
-        const Note = await NoteModel.findOneAndUpdate({uid},{$set:{title,content,user:User["_id"]}},{upsert:true,lean:true,new:true});
-        if(User.notes.includes(Note["_id"])){
-        } else {
-        await UserModel.updateOne({_id:User["_id"]},{$addToSet:{notes:Note["_id"]}})
-        }
-        
-        res.status(200).json(Note);
+        const {uid} = req.body;
+        const User = await UserModel.findOne({uid},{_id:1}).lean();
+        if(User){
+        const Notes = await NoteModel.find({user:User["_id"]}).lean();
+        res.status(200).json({notes:Notes});
+    }   else{
+        res.status(200).json({"error":"User not found"});
+
+    }
       } catch (err) {
         console.log(err);
         res.status(500).json("error");

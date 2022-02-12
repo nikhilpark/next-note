@@ -60,6 +60,7 @@ export default function NoteView() {
           title,
           content:note,
           uid:noteId,
+          userUid:localStorage.getItem("uid")
 
         }
         axios.post("/api/note",reqData).then((res)=>{
