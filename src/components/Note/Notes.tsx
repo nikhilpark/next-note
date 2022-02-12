@@ -11,7 +11,7 @@ export default function Notes() {
             setNotes(res.data.notes)
           }
         })
-      })
+      },[])
   return (
     <div>
          {notes.length>0?
