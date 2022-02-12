@@ -1,6 +1,7 @@
 import React,{useState} from 'react'
 import {Card,Divider,Button,Tooltip} from "@mui/material"
 import DeleteIcon from '@mui/icons-material/Delete';
+import Router from 'next/router'
 import EditIcon from '@mui/icons-material/Edit';
 import axios from 'axios';
 export interface NoteProps {
@@ -18,6 +19,7 @@ export default function Note(props:NoteProps) {
     axios.post("/api/note/delete",{noteId:noteId}).then((res)=>{
       if(res.status === 200){
         console.log("Note Deleted")
+        Router.reload()
       }
     })
   }

@@ -63,14 +63,14 @@ export default function CreateNote() {
           userUid:localStorage.getItem("uid")
 
         }
-        // axios.post("/api/note",reqData).then((res)=>{
-        //   if(res.status === 200){
-        //     console.log("Note Saved")
-        //     setTimeout(()=>{
-        //       setSaveLoading(false)
-        //     },400)
-        //   }
-        // })
+        axios.post("/api/note",reqData).then((res)=>{
+          if(res.status === 200){
+            console.log("Note Saved")
+            setTimeout(()=>{
+              setSaveLoading(false)
+            },400)
+          }
+        })
         
     }
   },[note,title,noteId])
